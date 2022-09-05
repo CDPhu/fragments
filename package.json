@@ -11,5 +11,8 @@
     "url": "git+https://github.com/LostButton/fragments.git"
   },
   "author": "Chan Dinh (Oscar) Phu",
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "prettier": "2.7.1"
+  }
 }
