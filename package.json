@@ -3,31 +3,42 @@
   "private": true,
   "version": "0.0.1",
   "description": "Fragments back-end API",
+  "engines": {
+    "node": ">=16"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint --config .eslintrc.js src/**"
+    "lint": "eslint --config .eslintrc.js src/**",
+    "start": "node src/server.js",
+    "dev": "cross-env LOG_LEVEL=debug nodemon ./src/server.js --watch src",
+    "debug": "cross-env LOG_LEVEL=debug nodemon --inspect=0.0.0.0:9229 ./src/server.js --watch src"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/LostButton/fragments.git"
   },
-  "author": "Chan Dinh (Oscar) Phu",
+  "author": "Chan Dinh (Oscar)",
   "license": "UNLICENSED",
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.36.2",
-    "@typescript-eslint/parser": "^5.36.2",
-    "eslint": "^8.23.0",
-    "prettier": "2.7.1"
+    "cross-env": "^7.0.3",
+    "eslint": "^8.6.0",
+    "nodemon": "^2.0.15",
+    "prettier": "2.5.1"
   },
   "dependencies": {
     "compression": "^1.7.4",
     "cors": "^2.8.5",
-    "dotenv": "^16.0.2",
-    "express": "^4.18.1",
-    "helmet": "^6.0.0",
-    "pino": "^8.5.0",
-    "pino-http": "^8.2.0",
-    "pino-pretty": "^9.1.0",
+    "express": "^4.17.2",
+    "helmet": "^5.0.1",
+    "pino": "^7.6.3",
+    "pino-http": "^6.5.0",
+    "pino-pretty": "^7.3.0",
     "stoppable": "^1.1.0"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/LostButton/fragments/issues"
+  },
+  "homepage": "https://github.com/LostButton/fragments#readme",
+  "main": ".eslintrc.js",
+  "keywords": []
 }
