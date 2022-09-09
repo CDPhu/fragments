@@ -9,3 +9,5 @@ To run start: npm start
 To run dev: npm run dev
 
 To run debug: npm run debug
+
+To run curl: curl -s localhost:8080 | jq
