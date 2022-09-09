@@ -1,6 +1,6 @@
 # fragments
 
-CCP555-Lab 1 (Release 0.1)
+CCP555-Lab 1
 
 To run lint: npm run lint
 
