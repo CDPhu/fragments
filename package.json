@@ -17,7 +17,7 @@
     "type": "git",
     "url": "git+https://github.com/LostButton/fragments.git"
   },
-  "author": "Chan Dinh (Oscar)",
+  "author": "Chan Dinh (Oscar) Phu",
   "license": "UNLICENSED",
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.36.2",
