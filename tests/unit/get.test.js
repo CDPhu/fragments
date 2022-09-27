@@ -1,7 +1,8 @@
 // tests/unit/get.test.js
-const { Fragment } = require('../../src/model/fragment');
+const hash = require('../../src/hash');
 const request = require('supertest');
 const app = require('../../src/app');
+const { readFragmentData } = require('../../src/model/data');
 
 describe('GET /v1/fragments', () => {
   // If the request is missing the Authorization header, it should be forbidden
@@ -37,24 +38,41 @@ describe('GET /v1/fragments', () => {
       .auth('user2@email.com', 'password2');
     expect(res.statusCode).toBe(200);
     expect(res.body.status).toBe('ok');
-    console.log(res.body);
   });
 
   test('get request by id', async () => {
-    const data = Buffer.from('hello');
-    const fragment = new Fragment({
-      ownerId: 'b0194b2e11548b547ddaff0e105b22347f94b625a7b964d7db72e1658c461a7f',
-      type: 'text/plain',
-      size: 0,
-    });
-    await fragment.save();
-    await fragment.setData(data);
+    // const data = Buffer.from('hello');
+    // const fragment = new Fragment({
+    //   ownerId: 'b0194b2e11548b547ddaff0e105b22347f94b625a7b964d7db72e1658c461a7f',
+    //   type: 'text/plain',
+    //   size: 0,
+    // });
+    // await fragment.save();
+    // await fragment.setData(data);
+
+    // const res = await request(app)
+    //   .get('/v1/fragments/' + fragment.id)
+    //   .auth('user2@email.com', 'password2');
+    // expect(res.statusCode).toBe(200);
+    // expect(res.body.status).toBe('ok');
+    // expect(res.body.fragments.data.toString()).toBe('hello');
+    const req = await request(app)
+      .post('/v1/fragments/')
+      .auth('user2@email.com', 'password2')
+      .send('This is fragment 1')
+      .set('Content-type', 'text/plain');
+
+    console.log(req.body);
+
+    const fragment = await readFragmentData(hash('user2@email.com'), req.body.fragment.id);
+
+    const id = req.body.fragment.id;
 
     const res = await request(app)
-      .get('/v1/fragments/' + fragment.id)
+      .get('/v1/fragments/' + id)
       .auth('user2@email.com', 'password2');
-    expect(res.statusCode).toBe(200);
-    expect(res.body.status).toBe('ok');
-    expect(res.body.fragments).toBe('hello');
+
+    console.log(res.body);
+    expect(res.body.fragments).toBe(fragment.toString());
   });
 });
