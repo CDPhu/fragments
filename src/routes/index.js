@@ -13,6 +13,7 @@ const router = express.Router();
 
 const { createSuccessResponse } = require('../response');
 
+// authenticate(),
 /**
  * Expose all of our API routes on /v1/* to include an API version.
  *  Protect them all so you have to be authenticated in order to access.
