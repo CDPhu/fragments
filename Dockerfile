@@ -34,10 +34,8 @@ COPY ./tests/.htpasswd ./tests/.htpasswd
 
 # Start the container by running our server
 # CMD npm start
-FROM node:16.14.2-alpine3.15@sha256:38bc06c682ae1f89f4c06a5f40f7a07ae438ca437a2a04cf773e66960b2d75bc AS production
+ FROM node:16.14--alpine3.14@sha256:98a87dfa76dde784bb4fe087518c839697ce1f0e4f55e6ad0b49f0bfd5fbe52c AS production
 # install curl
-# RUN apk --no-cache add curl
-# RUN apk --no-cache add dumb-init
 WORKDIR /
 RUN apk --no-cache add curl=7.79.1-r0 && apk --no-cache add dumb-init=1.2.5-r1
 COPY --chown=node:node --from=dependencies \
