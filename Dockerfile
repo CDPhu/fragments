@@ -38,7 +38,7 @@ FROM node:16.14.2-alpine3.15@sha256:38bc06c682ae1f89f4c06a5f40f7a07ae438ca437a2a
 # install curl
 # RUN apk --no-cache add curl
 # RUN apk --no-cache add dumb-init
-WORKDIR / 
+WORKDIR /
 RUN apk --no-cache add curl=7.80.0-r3 && apk --no-cache add dumb-init=1.2.5-r1
 COPY --chown=node:node --from=dependencies \
  /app/node_modules/ /app/ \   
