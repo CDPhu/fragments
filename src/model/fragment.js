@@ -1,7 +1,7 @@
 const { uuid } = require('uuidv4');
 // Use https://www.npmjs.com/package/content-type to create/parse Content-Type headers
 const contentType = require('content-type');
-
+const logger = require('../logger');
 // Functions for working with fragment metadata/data using our DB
 const {
   readFragment,
@@ -27,7 +27,7 @@ class Fragment {
       throw new Error();
     }
 
-    if (typeof type === 'string' && (type == 'text/plain; charset=utf-8' || type == 'text/plain')) {
+    if (Fragment.isSupportedType(type)) {
       this.type = type;
     } else {
       throw new Error();
@@ -61,7 +61,10 @@ class Fragment {
     // TODO
     try {
       const fragments = await listFragments(ownerId, expand);
-      return expand ? fragments.map((fragment) => new Fragment(fragment)) : fragments;
+      if (expand) {
+        return fragments.map((fragment) => new Fragment(fragment));
+      }
+      return fragments;
     } catch (err) {
       return [];
     }
@@ -73,11 +76,11 @@ class Fragment {
    * @returns Promise<Fragment>
    */
   static async byId(ownerId, id) {
-    // TODO
-    if ((await this.byUser(ownerId)).includes(id)) {
+    logger.info({ ownerId, id }, 'byId()');
+    try {
       return new Fragment(await readFragment(ownerId, id));
-    } else {
-      throw new Error('no such fragment');
+    } catch (error) {
+      throw new Error('unable to find fragment by that id');
     }
   }
 
@@ -89,7 +92,6 @@ class Fragment {
    */
   static delete(ownerId, id) {
     // TODO
-
     return deleteFragment(ownerId, id);
   }
 
@@ -108,7 +110,6 @@ class Fragment {
    * @returns Promise<Buffer>
    */
   getData() {
-    // TODO
     try {
       return new Promise((resolve, reject) => {
         readFragmentData(this.ownerId, this.id)
@@ -154,7 +155,7 @@ class Fragment {
    */
   get isText() {
     // TODO
-    let result = this.mimeType == 'text/plain';
+    let result = this.mimeType.startsWith('text/');
 
     return result;
   }
@@ -180,6 +181,8 @@ class Fragment {
     let result;
 
     if (value == 'text/plain' || value == 'text/plain; charset=utf-8') {
+      result = true;
+    } else if (value == 'text/markdown' || value == 'application/json' || value == 'text/html') {
       result = true;
     } else {
       result = false;

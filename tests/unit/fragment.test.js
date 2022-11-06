@@ -5,11 +5,11 @@ const wait = async (ms = 10) => new Promise((resolve) => setTimeout(resolve, ms)
 
 const validTypes = [
   `text/plain`,
-  /*
-   Currently, only text/plain is supported. Others will be added later.
   `text/markdown`,
   `text/html`,
   `application/json`,
+  /*
+   Currently, only text/plain is supported. Others will be added later.
   `image/png`,
   `image/jpeg`,
   `image/webp`,
@@ -59,11 +59,11 @@ describe('Fragment class', () => {
     });
 
     test('size can be 0', () => {
-      expect(() => new Fragment({ ownerId: '1234', type: 'text/plain', size: 0 })).not.toThrow();
+      expect(() => new Fragment({ ownerId: '1234', type: 'text/markdown', size: 0 })).not.toThrow();
     });
 
     test('size cannot be negative', () => {
-      expect(() => new Fragment({ ownerId: '1234', type: 'text/plain', size: -1 })).toThrow();
+      expect(() => new Fragment({ ownerId: '1234', type: 'text/html', size: -1 })).toThrow();
     });
 
     test('invalid types throw', () => {
@@ -124,6 +124,9 @@ describe('Fragment class', () => {
     test('common text types are supported, with and without charset', () => {
       expect(Fragment.isSupportedType('text/plain')).toBe(true);
       expect(Fragment.isSupportedType('text/plain; charset=utf-8')).toBe(true);
+      expect(Fragment.isSupportedType('text/markdown')).toBe(true);
+      expect(Fragment.isSupportedType('application/json')).toBe(true);
+      expect(Fragment.isSupportedType('text/html')).toBe(true);
     });
 
     test('other types are not supported', () => {
@@ -186,8 +189,6 @@ describe('Fragment class', () => {
 
       const fragment2 = await Fragment.byId('1234', fragment.id);
       expect(fragment2).toEqual(fragment);
-      console.log(data);
-      console.log(await fragment2.getData());
       expect(await fragment2.getData()).toEqual(data);
     });
 
@@ -244,7 +245,6 @@ describe('Fragment class', () => {
       await fragment.save();
       await fragment.setData(Buffer.from('a'));
       expect(fragment.size).toBe(1);
-
       await fragment.setData(Buffer.from('aa'));
       const { size } = await Fragment.byId('1234', fragment.id);
       expect(size).toBe(2);
