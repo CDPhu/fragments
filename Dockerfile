@@ -39,11 +39,11 @@ FROM node:16.14.2-alpine3.15@sha256:38bc06c682ae1f89f4c06a5f40f7a07ae438ca437a2a
 # RUN apk --no-cache add curl
 # RUN apk --no-cache add dumb-init
 WORKDIR /
-RUN apk add --no-cache curl=7.80.0-r3 && apk add --no-cache dumb-init=1.2.5-r1
+RUN apk --no-cache add curl=7.80.0-r3 && apk --no-cache add dumb-init=1.2.5-r1
 COPY --chown=node:node --from=dependencies \
- /app/node_modules/ /app/ \   
+/app/node_modules/ /app/ \
 /app/src/ /app/  \
-/app/package.json ./ 
+/app/package.json ./
 
 # We default to use port 8080 in our service
 ENV PORT=8080
