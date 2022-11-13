@@ -8,5 +8,6 @@
     "source.fixAll": true
   },
   "files.eol": "\n",
-  "files.insertFinalNewline": true
+  "files.insertFinalNewline": true,
+  "cSpell.words": ["cacheable", "HTPASSWD", "jsonpath"]
 }
