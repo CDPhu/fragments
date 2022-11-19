@@ -63,6 +63,7 @@ module.exports = {
       if (req.params.id) {
         try {
           fragment = await Fragment.byId(req.user, req.params.id);
+          console.log(fragment);
           res.status(200).json(fragment);
           logger.info({ fragmentInfo: fragment }, `successfully get fragment meta data`);
         } catch (err) {

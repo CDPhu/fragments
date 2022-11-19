@@ -31,5 +31,5 @@ router.get('/fragments/:id/info', info);
 router.get('/fragments/?expand', get);
 router.get('/fragments/:id', get);
 // Other routes will go here later on...
-
+router.delete('/fragments/:id', require('./delete'));
 module.exports = router;
