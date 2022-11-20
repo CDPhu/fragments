@@ -3,7 +3,7 @@
 const express = require('express');
 
 // version and author from package.json
-const { version, author } = require('../../package.json');
+const { version } = require('../../package.json');
 
 // Our authorization middleware
 const { authenticate } = require('../authorization');
@@ -13,6 +13,7 @@ const router = express.Router();
 
 const { createSuccessResponse } = require('../response');
 
+const { hostname } = require('os');
 // authenticate(),
 /**
  * Expose all of our API routes on /v1/* to include an API version.
@@ -32,9 +33,11 @@ router.get('/', (req, res) => {
   // Send a 200 'OK' response with info about our repo
   res.status(200).json(
     createSuccessResponse({
-      author,
+      author: 'Chan Dinh (Oscar) Phu',
       githubUrl: 'https://github.com/LostButton/fragments',
       version,
+      // Include the hostname in the response
+      hostname: hostname(),
     })
   );
 });
