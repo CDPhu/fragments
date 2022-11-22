@@ -35,6 +35,10 @@
           "value": "us-east-1_Y5F0N1y9t"
         },
         {
+          "name": "AWS_S3_BUCKET_NAME",
+          "value": "cdphu-fragments"
+        },
+        {
           "name": "PORT",
           "value": "8080"
         }
