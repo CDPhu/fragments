@@ -34,6 +34,8 @@ services:
     # Ports to publish
     ports:
       - '8080:8080'
+    expose:
+      - '8080'
 
   # DynamoDB Local, see: https://hub.docker.com/r/amazon/dynamodb-local
   dynamodb-local:
@@ -44,6 +46,8 @@ services:
     # Run the database in memory, see:
     # https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.UsageNotes.html
     command: ['-jar', 'DynamoDBLocal.jar', '-inMemory']
+    expose:
+      - '8000'
 
   localstack:
     # https://hub.docker.com/r/localstack/localstack
@@ -57,9 +61,11 @@ services:
       - SERVICES=s3
       # We're always working in us-east-1
       - DEFAULT_REGION=us-east-1
-
       # Assumes we've already created credentials with `aws configure --profile localstack`
       # or uses `test` as a fallback
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-test}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-test}
       - AWS_SESSION_TOKEN=${AWS_SESSION_TOKEN:-test}
+
+    expose:
+      - '4566'
