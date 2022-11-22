@@ -10,7 +10,7 @@ module.exports = async (req, res) => {
   if (Buffer.isBuffer(req.body) === true) {
     fragment = new Fragment({
       ownerId: req.user,
-      type: req.get('content-type'),
+      type: req.get('Content-type'),
       size: req.body.length,
     });
     try {
@@ -21,9 +21,11 @@ module.exports = async (req, res) => {
       logger.info({ fragment: fragment }, `successfully posted fragment`);
     } catch (err) {
       res.status(415).json(415, 'unable to post fragment');
+      logger.info({ fragment });
     }
   } else {
     res.status(415).json(createErrorResponse(415, 'not supported type'));
+    logger.info({ fragment });
     logger.info(`posting fragment was unsuccessful`);
   }
 };
