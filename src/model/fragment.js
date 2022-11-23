@@ -12,20 +12,6 @@ const {
   deleteFragment,
 } = require('./data');
 
-const validTypes = [
-  'text/plain',
-  'text/markdown',
-  'text/html',
-  'application/json',
-  'text/plain: charset=utf-8',
-  /*
-  `image/png`,
-  `image/jpeg`,
-  `image/webp`,
-  `image/gif`,
-  */
-];
-
 class Fragment {
   constructor({ id, ownerId, created, updated, type, size = 0 }) {
     // TODO
@@ -168,11 +154,10 @@ class Fragment {
    * @returns {boolean} true if fragment's type is text/*
    */
   get isText() {
-    if (this.mimeType.match(/text\/+/)) {
-      return true;
-    } else {
-      return false;
-    }
+    // TODO
+    let result = this.mimeType.startsWith('text/');
+
+    return result;
   }
 
   /**
@@ -180,19 +165,10 @@ class Fragment {
    * @returns {Array<string>} list of supported mime types
    */
   get formats() {
-    if (this.mimeType === 'text/plain') {
-      return ['text/plain'];
-    } else if (this.mimeType === 'text/plain: charset=utf-8') {
-      return ['text/plain', 'text/plain: charset=utf-8', 'text/html'];
-    } else if (this.mimeType === 'text/markdown') {
-      return ['text/plain', 'text/markdown', 'text/html'];
-    } else if (this.mimeType === 'text/html') {
-      return ['text/plain', 'text/html'];
-    } else if (this.mimeType === 'application/json') {
-      return ['text/plain', 'application/json'];
-    } else {
-      return ['image/png', 'image/jpeg', 'image/webp', 'image/gif'];
-    }
+    // TODO
+    let result = [];
+    result.push(this.mimeType);
+    return result;
   }
 
   /**
@@ -202,8 +178,21 @@ class Fragment {
    */
   static isSupportedType(value) {
     // TODO
-    logger.debug('isSupportedType: ' + value);
-    let result = validTypes.some((element) => value.includes(element));
+    let result;
+
+    if (value == 'text/plain' || value == 'text/plain; charset=utf-8') {
+      result = true;
+    } else if (
+      value == 'text/markdown' ||
+      value == 'application/json' ||
+      value == 'application/json; charset=utf-8' ||
+      value == 'text/html'
+    ) {
+      result = true;
+    } else {
+      result = false;
+    }
+
     return result;
   }
 }
