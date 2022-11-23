@@ -9,7 +9,7 @@ module.exports = async (req, res) => {
   try {
     fragment = new Fragment({
       ownerId: req.user,
-      type: req.get('Content-Type'),
+      type: req.get('Content-type'),
       size: req.body.length,
     });
     await fragment.save();
