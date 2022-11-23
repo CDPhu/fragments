@@ -21,7 +21,7 @@ module.exports = async (req, res) => {
       logger.info({ fragment: fragment }, `successfully posted fragment`);
     } catch (err) {
       logger.info({ fragment: fragment.type });
-      res.status(415).json(415, 'unable to post fragment' + fragment.type);
+      res.status(415).json(415, 'unable to post fragment ' + fragment.type);
     }
   } else {
     res.status(415).json(createErrorResponse(415, 'not supported type'));
