@@ -10,7 +10,7 @@ module.exports = async (req, res) => {
   if (Buffer.isBuffer(req.body) === true) {
     fragment = new Fragment({
       ownerId: req.user,
-      type: req.get('Content-type'),
+      type: req.get('content-type'),
       size: req.body.length,
     });
     try {
