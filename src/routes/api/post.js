@@ -17,7 +17,7 @@ module.exports = async (req, res) => {
     try {
       await fragment.save();
       await fragment.setData(req.body);
-      res.setHeader('Content-Type', 'application/json; charset=utf-8');
+      res.setHeader('Content-Type', 'application/json');
       res.location(`${api}/v1/fragments/${fragment.id}`);
 
       // set the location response header to use the one set in the env file
