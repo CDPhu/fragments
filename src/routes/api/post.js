@@ -2,6 +2,7 @@ const { Fragment } = require('../../model/fragment');
 const { createSuccessResponse, createErrorResponse } = require('../../response');
 const logger = require('../../logger');
 require('dotenv').config();
+const contentType = require('content-type');
 
 module.exports = async (req, res) => {
   // TODO: this is just a placeholder to get something working...
@@ -10,17 +11,22 @@ module.exports = async (req, res) => {
   if (Buffer.isBuffer(req.body) === true) {
     fragment = new Fragment({
       ownerId: req.user,
-      type: req.get('content-type'),
+      type: req.get('Content-Type'),
       size: req.body.length,
     });
     try {
       await fragment.save();
       await fragment.setData(req.body);
+      res.setHeader('Content-Type', 'application/json; charset=utf-8');
       res.location(`${api}/v1/fragments/${fragment.id}`);
+
+      // set the location response header to use the one set in the env file
+      res.setHeader('Location', `${process.env.API_URL}/${fragment.id}`);
+
       res.status(201).json(createSuccessResponse({ fragment }));
       logger.info({ fragment: fragment }, `successfully posted fragment`);
     } catch (err) {
-      logger.info({ fragment: fragment.type });
+      logger.error(`${contentType.parse(req).type} is not supported`);
       res.status(415).json(415, 'unable to post fragment ' + fragment.type);
     }
   } else {

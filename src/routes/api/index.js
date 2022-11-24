@@ -6,6 +6,7 @@ const contentType = require('content-type');
  */
 const express = require('express');
 const { get, info } = require('./get.js');
+const logger = require('../../logger');
 // Create a router on which to mount our API endpoints
 const router = express.Router();
 // Support sending various Content-Types on the body up to 5M in size
@@ -17,7 +18,10 @@ const rawBody = () =>
       // See if we can parse this content type. If we can, `req.body` will be
       // a Buffer (e.g., `Buffer.isBuffer(req.body) === true`). If not, `req.body`
       // will be equal to an empty Object `{}` and `Buffer.isBuffer(req.body) === false`
+      // eslint-disable-next-line no-undef
       const { type } = contentType.parse(req);
+      const test = contentType.parse(req);
+      logger.debug(test);
       return Fragment.isSupportedType(type);
     },
   });

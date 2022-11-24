@@ -91,7 +91,6 @@ class Fragment {
    * @returns Promise
    */
   static delete(ownerId, id) {
-    // TODO
     return deleteFragment(ownerId, id);
   }
 
@@ -178,22 +177,15 @@ class Fragment {
    */
   static isSupportedType(value) {
     // TODO
-    let result;
+    let result = false;
 
     if (value == 'text/plain' || value == 'text/plain; charset=utf-8') {
-      result = true;
-    } else if (
-      value == 'text/markdown' ||
-      value == 'application/json' ||
-      value == 'application/json; charset=utf-8' ||
-      value == 'text/html'
-    ) {
-      result = true;
+      return (result = true);
+    } else if (value == 'text/markdown' || value == 'application/json' || value == 'text/html') {
+      return (result = true);
     } else {
-      result = false;
+      return result;
     }
-
-    return result;
   }
 }
 
