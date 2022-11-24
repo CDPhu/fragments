@@ -21,7 +21,7 @@ module.exports = async (req, res) => {
       res.location(`${api}/v1/fragments/${fragment.id}`);
 
       // set the location response header to use the one set in the env file
-      res.setHeader('Location', `${process.env.API_URL}/${fragment.id}`);
+      res.setHeader('Location', `${process.env.API_URL}/v1/fragments/${fragment.id}`);
 
       res.status(201).json(createSuccessResponse({ fragment }));
       logger.info({ fragment: fragment }, `successfully posted fragment`);
