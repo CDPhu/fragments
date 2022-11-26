@@ -105,3 +105,6 @@ dist
 
 # SSH Key Pair
 .ssh
+
+
+/minio
