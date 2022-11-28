@@ -1,9 +1,7 @@
 const { uuid } = require('uuidv4');
 // Use https://www.npmjs.com/package/content-type to create/parse Content-Type headers
 const contentType = require('content-type');
-
 const logger = require('../logger');
-
 // Functions for working with fragment metadata/data using our DB
 const {
   readFragment,
@@ -13,41 +11,43 @@ const {
   listFragments,
   deleteFragment,
 } = require('./data');
-// eslint-disable-next-line no-unused-vars
-const { text } = require('express');
-
-const validTypes = [
-  'text/plain',
-  'text/markdown',
-  'text/html',
-  'application/json',
-  // `image/png`,
-  // `image/jpeg`,
-  // `image/webp`,
-  // `image/gif`,
-];
 
 class Fragment {
-  // eslint-disable-next-line no-unused-vars
   constructor({ id, ownerId, created, updated, type, size = 0 }) {
-    if (!ownerId) {
-      throw new Error('Owner ID is mandatory');
-    } else if (!type) {
-      throw new Error('Type is mandatory');
-    } else if (typeof size !== 'number') {
-      throw new Error('Size must be a number');
-    } else if (size < 0) {
-      throw new Error('Size must be a positive number');
-    } else if (!validTypes.some((item) => type.includes(item))) {
-      throw new Error(`${type} is not supported`);
+    // TODO
+    if (id) {
+      this.id = id;
     } else {
-      // create a new id if id is not passed
-      this.id = id ? id : uuid();
+      this.id = uuid();
+    }
+
+    if (ownerId) {
       this.ownerId = ownerId;
-      this.created = created ? created : new Date().toISOString();
-      this.updated = updated ? updated : new Date().toISOString();
+    } else {
+      throw new Error();
+    }
+
+    if (Fragment.isSupportedType(type)) {
       this.type = type;
+    } else {
+      throw new Error();
+    }
+
+    if (size < 0 || typeof size === 'string') {
+      throw new Error(`size can't be negative`);
+    } else {
       this.size = size;
+    }
+
+    if (created) {
+      this.created = created;
+    } else {
+      this.created = new Date().toISOString();
+    }
+    if (updated) {
+      this.updated = updated;
+    } else {
+      this.updated = new Date().toISOString();
     }
   }
 
@@ -58,18 +58,17 @@ class Fragment {
    * @returns Promise<Array<Fragment>>
    */
   static async byUser(ownerId, expand = false) {
-    // return await listFragments(ownerId, expand);
+    // TODO
     try {
-      logger.debug({ ownerId, expand }, 'Fragment.byUser()');
       const fragments = await listFragments(ownerId, expand);
-      return expand ? fragments.map((fragment) => new Fragment(fragment)) : fragments;
+      if (expand) {
+        return fragments.map((fragment) => new Fragment(fragment));
+      }
+      return fragments;
     } catch (err) {
-      // A user might not have any fragments (yet), so return an empty
-      // list instead of an error when there aren't any.
       return [];
     }
   }
-
   /**
    * Gets a fragment for the user by the given id.
    * @param {string} ownerId user's hashed email
@@ -77,16 +76,11 @@ class Fragment {
    * @returns Promise<Fragment>
    */
   static async byId(ownerId, id) {
+    logger.info({ ownerId, id }, 'byId()');
     try {
-      logger.debug(`Fragment data with id: ${id} from owner: ${ownerId}`);
-      const frag = await readFragment(ownerId, id);
-      if (!frag) {
-        logger.warn('No fragment found with the provided data');
-        throw new Error('No fragment found with the provided data');
-      }
-      return frag;
-    } catch (err) {
-      throw new Error(err);
+      return new Fragment(await readFragment(ownerId, id));
+    } catch (error) {
+      throw new Error('unable to find fragment by that id');
     }
   }
 
@@ -105,8 +99,7 @@ class Fragment {
    * @returns Promise
    */
   save() {
-    logger.info(`Saving fragment to database`);
-    logger.debug(`Fragment being saved: ${this}`);
+    // TODO
     this.updated = new Date().toISOString();
     return writeFragment(this);
   }
@@ -116,7 +109,17 @@ class Fragment {
    * @returns Promise<Buffer>
    */
   getData() {
-    return readFragmentData(this.ownerId, this.id);
+    try {
+      return new Promise((resolve, reject) => {
+        readFragmentData(this.ownerId, this.id)
+          .then((data) => resolve(Buffer.from(data)))
+          .catch(() => {
+            reject(new Error());
+          });
+      });
+    } catch (err) {
+      throw new Error(`false`);
+    }
   }
 
   /**
@@ -125,14 +128,14 @@ class Fragment {
    * @returns Promise
    */
   async setData(data) {
-    if (!Buffer.isBuffer(data)) {
-      logger.debug(`Type of data is:  ${typeof data}`);
-      throw new Error('data is not a buffer. Check log for details');
+    // TODO
+    if (!data) {
+      throw new Error();
+    } else {
+      this.updated = new Date().toISOString();
+      this.size = data.toString().length;
+      return writeFragmentData(this.ownerId, this.id, data);
     }
-    logger.debug(`Setting data for this fragment`);
-    this.updated = new Date().toISOString();
-    this.size = Buffer.byteLength(data);
-    return writeFragmentData(this.ownerId, this.id, data);
   }
 
   /**
@@ -150,7 +153,10 @@ class Fragment {
    * @returns {boolean} true if fragment's type is text/*
    */
   get isText() {
-    return this.mimeType.startsWith('text/');
+    // TODO
+    let result = this.mimeType.startsWith('text/');
+
+    return result;
   }
 
   /**
@@ -158,24 +164,10 @@ class Fragment {
    * @returns {Array<string>} list of supported mime types
    */
   get formats() {
-    const type = this.mimeType;
-    switch (type) {
-      case 'text/markdown':
-        return ['text/markdown', 'text/html', 'text/plain'];
-
-      case 'text/plain':
-        return ['text/plain'];
-
-      case 'text/html':
-        return ['text/html', 'text/plain'];
-
-      case 'application/json':
-        return ['application/json', 'text/plain'];
-
-      default:
-        logger.info(`${this.mimeType} file type is not supported`);
-        return [];
-    }
+    // TODO
+    let result = [];
+    result.push(this.mimeType);
+    return result;
   }
 
   /**
@@ -184,8 +176,17 @@ class Fragment {
    * @returns {boolean} true if we support this Content-Type (i.e., type/subtype)
    */
   static isSupportedType(value) {
-    // accepts all text types and json. Check validTypes for the full list
-    return validTypes.some((item) => value.includes(item));
+    // TODO
+    let result;
+
+    if (value == 'text/plain' || value == 'text/plain; charset=utf-8') {
+      result = true;
+    } else if (value == 'text/markdown' || value == 'application/json' || value == 'text/html') {
+      result = true;
+    } else {
+      result = false;
+    }
+    return result;
   }
 }
 
