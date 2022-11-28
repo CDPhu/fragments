@@ -2,6 +2,7 @@ const { Fragment } = require('../../model/fragment');
 const { createSuccessResponse, createErrorResponse } = require('../../response');
 const logger = require('../../logger');
 require('dotenv').config();
+const contentType = require('content-type');
 
 module.exports = async (req, res) => {
   // TODO: this is just a placeholder to get something working...
@@ -20,7 +21,8 @@ module.exports = async (req, res) => {
       res.status(201).json(createSuccessResponse({ fragment }));
       logger.info({ fragment: fragment }, `successfully posted fragment`);
     } catch (err) {
-      res.status(415).json(415, 'unable to post fragment');
+      logger.error(`${contentType.parse(req).type} is not supported`);
+      res.status(415).json(415, 'unable to post fragment ' + fragment.type);
     }
   } else {
     res.status(415).json(createErrorResponse(415, 'not supported type'));
