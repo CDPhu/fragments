@@ -64,4 +64,14 @@ describe('PUT /v1/fragments', () => {
 
     expect(req.body.toString()).toBe('this is fragment 1');
   });
+
+  test('authenticated user try to update a fragment data with invalid id', async () => {
+    const res = await request(app)
+      .put('/v1/fragments/invalidId')
+      .auth('user1@email.com', 'password1')
+      .send('this is fragment 1 update')
+      .set('Content-type', 'text/markdown');
+
+    expect(res.status).toBe(404);
+  });
 });
