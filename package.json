@@ -51,6 +51,7 @@
     "pino": "^7.11.0",
     "pino-http": "^6.6.0",
     "pino-pretty": "^7.6.1",
+    "sharp": "^0.31.2",
     "stoppable": "^1.1.0",
     "uuidv4": "^6.2.13"
   },

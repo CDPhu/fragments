@@ -1,7 +1,6 @@
 const { Fragment } = require('../../model/fragment');
 const { createSuccessResponse, createErrorResponse } = require('../../response');
 const logger = require('../../logger');
-require('dotenv').config();
 const contentType = require('content-type');
 
 module.exports = async (req, res) => {

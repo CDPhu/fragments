@@ -47,7 +47,6 @@ describe('GET /v1/fragments', () => {
     expect(res.body.status).toBe('ok');
     expect(res.body.fragments).toEqual(result);
   });
-
   test('get request by id', async () => {
     const req = await request(app)
       .post('/v1/fragments/')
@@ -102,7 +101,7 @@ describe('GET /v1/fragments', () => {
     expect(res1.statusCode).toBe(404);
   });
 
-  test('convert', async () => {
+  test('convert markdown to html', async () => {
     const req = await request(app)
       .post('/v1/fragments/')
       .auth('user1@email.com', 'password1')
@@ -116,7 +115,6 @@ describe('GET /v1/fragments', () => {
       .auth('user1@email.com', 'password1');
     expect(res.text).toEqual('<h1>This is a markdown</h1>\n');
   });
-
   test('unsupported conversion', async () => {
     const req = await request(app)
       .post('/v1/fragments/')
@@ -131,7 +129,6 @@ describe('GET /v1/fragments', () => {
       .auth('user1@email.com', 'password1');
     expect(res.statusCode).toBe(415);
   });
-
   test('fail get by id', async () => {
     const req = await request(app)
       .post('/v1/fragments/')
