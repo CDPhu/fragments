@@ -152,6 +152,38 @@ describe('GET /v1/fragments', () => {
       .auth('user1@email.com', 'password1');
     expect(res.statusCode).toBe(415);
   });
+
+  test('html to text', async () => {
+    const req = await request(app)
+      .post('/v1/fragments/')
+      .auth('user1@email.com', 'password1')
+      .send('<h2> Html </h2>')
+      .set('Content-type', 'text/html');
+
+    const id = req.body.fragment.id;
+
+    const res = await request(app)
+      .get('/v1/fragments/' + id + '.txt')
+      .auth('user1@email.com', 'password1');
+    expect(res.statusCode).toBe(200);
+    expect(res.text).toBe('<h2> Html </h2>');
+  });
+
+  test('html to random ext', async () => {
+    const req = await request(app)
+      .post('/v1/fragments/')
+      .auth('user1@email.com', 'password1')
+      .send('<h2> Html </h2>')
+      .set('Content-type', 'text/html');
+
+    const id = req.body.fragment.id;
+
+    const res = await request(app)
+      .get('/v1/fragments/' + id + '.tx')
+      .auth('user1@email.com', 'password1');
+    expect(res.statusCode).toBe(415);
+  });
+
   test('fail get by id', async () => {
     const req = await request(app)
       .post('/v1/fragments/')

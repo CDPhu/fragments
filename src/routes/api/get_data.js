@@ -18,7 +18,7 @@ module.exports = {
       fragment = await fragmentM.getData();
       if (q.ext == '' || fragmentM.type.endsWith(ext)) {
         res.setHeader('Content-Type', fragmentM.type);
-        res.status(200).send(fragment);
+        res.status(200).send(Buffer.from(fragment));
         logger.info(
           { fragmentData: fragment, contentType: fragmentM.type },
           `successfully get fragment data`

@@ -19,5 +19,5 @@ Authorization: Basic dXNlcjFAZW1haWwuY29tOnBhc3N3b3JkMQ==
 
 # 200 success response , content-type changed to text/plain
 HTTP/1.1 200
-Content-Type: text/plain
-<h2> Hi </h2>
+[Asserts]
+body == ```<h2> Hi </h2>```
