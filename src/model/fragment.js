@@ -254,14 +254,17 @@ class Fragment {
   async imgConvert(value) {
     var result, fragData;
     fragData = await this.getData();
-    if (value == 'gif') {
-      result = await sharp(fragData).gif();
-    } else if (value == 'jpg' || value == 'jpeg') {
-      result = await sharp(fragData).jpeg();
-    } else if (value == 'webp') {
-      result = await sharp(fragData).webp();
-    } else if (value == 'png') {
-      result = await sharp(fragData).png();
+
+    if (this.type.startsWith('image')) {
+      if (value == 'gif') {
+        result = await sharp(fragData).gif();
+      } else if (value == 'jpg' || value == 'jpeg') {
+        result = await sharp(fragData).jpeg();
+      } else if (value == 'webp') {
+        result = await sharp(fragData).webp();
+      } else if (value == 'png') {
+        result = await sharp(fragData).png();
+      }
     }
     return result.toBuffer();
   }
