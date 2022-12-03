@@ -115,7 +115,6 @@ class Fragment {
    * @returns Promise
    */
   save() {
-    // TODO
     this.updated = new Date().toISOString();
     return writeFragment(this);
   }
@@ -134,7 +133,7 @@ class Fragment {
           });
       });
     } catch (err) {
-      throw new Error(`false`);
+      throw new Error(`unable to get data`);
     }
   }
 
@@ -144,7 +143,6 @@ class Fragment {
    * @returns Promise
    */
   async setData(data) {
-    // TODO
     if (!data) {
       throw new Error();
     } else {
@@ -171,15 +169,6 @@ class Fragment {
    */
   get isText() {
     let result = this.mimeType.startsWith('text/');
-    return result;
-  }
-
-  /**
-   * Returns true if this fragment is a image/* mime type
-   * @returns {boolean} true if fragment's type is image/*
-   */
-  get isImage() {
-    let result = this.mimeType.startsWith('image/');
     return result;
   }
 
@@ -238,7 +227,9 @@ class Fragment {
       }
     } else if (this.type == 'application/json' && value == 'text') {
       result = JSON.parse(fragData);
-    } else {
+    } else if (value == 'md' && this.type == 'text/markdown') {
+      result = fragData;
+    } else if (value != 'md') {
       result = fragData;
     }
     return result;

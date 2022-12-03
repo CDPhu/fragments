@@ -123,6 +123,21 @@ describe('GET /v1/fragments', () => {
     expect(res.text).toEqual('<h1>This is a markdown</h1>\n');
   });
 
+  test('convert markdown to markdown', async () => {
+    const req = await request(app)
+      .post('/v1/fragments/')
+      .auth('user1@email.com', 'password1')
+      .send('# This is a markdown')
+      .set('Content-type', 'text/markdown');
+
+    const id = req.body.fragment.id;
+
+    const res = await request(app)
+      .get('/v1/fragments/' + id + '.md')
+      .auth('user1@email.com', 'password1');
+    expect(res.text).toEqual('# This is a markdown');
+  });
+
   test('unsupported conversion', async () => {
     const req = await request(app)
       .post('/v1/fragments/')
