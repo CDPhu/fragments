@@ -1,4 +1,5 @@
-const { uuid } = require('uuidv4');
+// Use https://www.npmjs.com/package/nanoid to create unique IDs
+const { nanoid } = require('nanoid');
 // Use https://www.npmjs.com/package/content-type to create/parse Content-Type headers
 const contentType = require('content-type');
 const logger = require('../logger');
@@ -35,7 +36,7 @@ class Fragment {
     if (id) {
       this.id = id;
     } else {
-      this.id = uuid();
+      this.id = nanoid();
     }
 
     if (ownerId) {
@@ -218,22 +219,7 @@ class Fragment {
    * @param {string} value a convert type value
    * @returns result
    */
-  // async txtConvert(value) {
-  //   var result, fragData;
-  //   fragData = await this.getData();
-  //   if (value == 'html' && this.type != 'text/html') {
-  //     if (this.type == 'text/markdown') {
-  //       result = md.render(fragData.toString());
-  //     }
-  //   } else if (this.type == 'application/json' && value == 'plain') {
-  //     result = JSON.parse(fragData);
-  //   } else if (this.type == 'text/html' && value == 'plain') {
-  //     result = fragData;
-  //   } else if (value != 'md' && this.type != 'text/plain') {
-  //     result = fragData;
-  //   }
-  //   return result;
-  // }
+
   async txtConvert(value) {
     var result, fragData;
     fragData = await this.getData();
