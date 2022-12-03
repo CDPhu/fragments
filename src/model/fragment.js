@@ -1,5 +1,4 @@
-// Use https://www.npmjs.com/package/nanoid to create unique IDs
-const { nanoid } = require('nanoid');
+const { uuid } = require('uuidv4');
 // Use https://www.npmjs.com/package/content-type to create/parse Content-Type headers
 const contentType = require('content-type');
 const logger = require('../logger');
@@ -36,7 +35,7 @@ class Fragment {
     if (id) {
       this.id = id;
     } else {
-      this.id = nanoid();
+      this.id = uuid();
     }
 
     if (ownerId) {
